@@ -1,0 +1,51 @@
+{
+  "root": true,
+  "extends": "airbnb",
+  "rules": {
+    "semi": [1, "always"],
+    "no-console": 1,
+    "no-unused-expressions": 1,
+    "no-unused-labels": 1,
+    "no-eval": 1,
+    "space-in-parens": 1,
+    "react/jsx-filename-extension": 0,
+    "react/jsx-no-target-blank": 0,
+    "react/no-array-index-key": 0,
+    "react/require-extension": 0,
+    "react/require-default-props": 0,
+    "react/self-closing-comp": 0,
+    "react/forbid-prop-types": 0,
+    "no-underscore-dangle": 0,
+    "no-plusplus": 0,
+    "no-continue": 0,
+    "import/prefer-default-export": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/no-noninteractive-element-interactions": 0,
+    "react/no-unescaped-entities": 0,
+    "max-len": "off",
+    "require-yield": 0,
+    "comma-dangle": 0,
+    "no-use-before-define": 0,
+    "import/no-webpack-loader-syntax": 0
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jasmine": true,
+    "mocha": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.config.js"
+      }
+    }
+  }
+}
