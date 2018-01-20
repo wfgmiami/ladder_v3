@@ -15,7 +15,7 @@ return (
 		<tbody>
 			<tr>
 				<td className="">
-					20% max per sector/12% in health care
+					30% max per sector/12% in health care
 				</td>
 				<td className="">
 					25k min allocated
@@ -48,7 +48,7 @@ return (
 			</tr>
 			<tr>
 				<td className="">
-					All buckets equally weighted
+					20% max per state
 				</td>
 				<td className="">
 
@@ -58,7 +58,7 @@ return (
 				</td>
 			</tr>
 			<tr>
-				<td></td>
+				<td>All buckets equally weighted</td>
 				<td></td>
 				<td>5. Give preference to recent purchases</td>
 			</tr>
