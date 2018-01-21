@@ -19,12 +19,12 @@ class BucketSummary extends React.Component{
 	}
 
 	componentWillMount(){
-		console.log('.....willMount this.props', this.props);
+		console.log('.....allocation summary willMount this.props', this.props);
 		this.setState({ bucketsSummary: this.props.bucketsSummary });
 	}
 
 	componentWillReceiveProps( nextProps ){
-		console.log('bucket allocation...next Props', nextProps);
+		console.log('allocation summary...next Props', nextProps);
 		if( nextProps.bucketsSummary !== this.state.bucketsSummary ){
 			this.setState( { bucketsSummary: nextProps.bucketsSummary } );
 		}
@@ -76,14 +76,14 @@ class BucketSummary extends React.Component{
 				<thead>
 					<tr>
 						<th className="size">Portfolio Summary</th>
-						<th className="size">Rule</th>	
-						
+						<th className="size">Rule</th>
+
 					</tr>
 				</thead>
 			  </table>
-			
+
 			  <div style={{ maxHeight:'60vh', overflowY:'auto' }}>
-			
+
 			  <table>
 				<tbody>
 					<tr><td>{ aAndLow }, ${ aAndBelow.toLocaleString() }, { (aAndBelow/this.props.investedAmt*100).toFixed(2)*1 }%</td><td>{'<= 30%'}</td></tr>
@@ -92,11 +92,11 @@ class BucketSummary extends React.Component{
 						<tr key = { id }>
 							<td>{ sector }, ${ this.props.allocSector[sector].toLocaleString()}, { (this.props.allocSector[sector]/this.props.investedAmt*100).toFixed(2)*1 }%</td>
 							<td>{ sector == 'Health Care' ? '<= 12%' : '<= 20%' }</td>
-						</tr>	
+						</tr>
 					))}
 			   </tbody>
 			  </table>
-			
+
 			  </div>
 
 	  		</div>

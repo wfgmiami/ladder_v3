@@ -47,7 +47,7 @@ class Nav extends React.Component {
           <div className="container-fluid">
             <div className="row">
 
-              <div className='col-sm-2'>
+              <div className='col-sm-1'>
                 <div className="navbar-header">
                     <button  onClick={ this.toggleNavbar } className={ `${classTwo}` } type="button" data-toggle="collapse" data-target="#navbarResponsive">
                       <span className="icon-bar" />
@@ -59,27 +59,19 @@ class Nav extends React.Component {
               </div>
 
               <div className={ `${ classOne }` } id="navbarResponsive">
-			
+                <div className="col-sm-2" style={{ paddingLeft: '5%'}}>
+                <p><b>Minimum Allocation</b></p>
+                  <select style={{ width: '55%', display:'inline' }} className='form-control' onChange = { this.onMinAllocChange }>
+            { minAllocation.map( ( minAlloc, idx ) => (
+                    <option key = { idx } value = { minAlloc }>{ minAlloc }</option>
+            ))}
+                  </select>
+                </div>
                 <div className="col-sm-5">
-					<select style={{ width: '13%', display:'inline' }} className='form-control' onChange = { this.onCashReducerChange }>
-					{ cashReducer.map( ( cashReducer, idx ) => (
-						<option key = { idx } value = { cashReducer }>{ cashReducer }</option>
-					))}
-					</select>
-				   &nbsp;<b>Cash Holdings Reducer</b>			
-
                     <MaturitySlider filterMaturity = { this.props.filterMaturity }/>
                 </div>
 
-                <div className="col-sm-5">
-					
-					<select style={{ width: '20%', display:'inline' }} className='form-control' onChange = { this.onMinAllocChange }>
-					{ minAllocation.map( ( minAlloc, idx ) => (
-						<option key = { idx } value = { minAlloc }>{ minAlloc }</option>
-					))}
-					</select>
-					&nbsp;<b>Minimum Allocation Size</b>	
-						
+                <div className="col-sm-4">
                   	<AmountSlider setLadder = { this.props.setLadder }/>
                 </div>
               </div>

@@ -289,15 +289,6 @@ class App extends Component {
 
 		allocState[state] ? allocState[state] += allocatedAmount : allocState[state] = allocatedAmount
 
-		/*	
-		if( state == 'NY' ){
-			allocState['NY'] ? allocState['NY'] += allocatedAmount
-			: allocState['NY'] = allocatedAmount
-		}else if( state == 'CA' ){
-			allocState['CA'] ? allocState['CA'] += allocatedAmount
-			: allocState['CA'] = allocatedAmount
-		}
-*/
 		const bucketInfo = {
 			allocSector,
 			allocState,
@@ -343,7 +334,7 @@ class App extends Component {
 			this.handleLimit( bucketInfo );
 			stateAdjustedBond = bucketInfo.stateAdjustedBond;
 		}
-		
+
 		if( allocState[state] > maxState ){
 			maxStateHit = true;
 			bucketInfo.calledBy = 'state';
@@ -381,19 +372,16 @@ class App extends Component {
 				allocSector[sector] -= amountToRemove;
 				allocBucket[bucket] -= amountToRemove;
 				adjustedBond['investAmt'] -= amountToRemove;
-				if( adjustedBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] -= amountToRemove;	
-				allocState[state] -= amountToRemove;			
-				
+				if( adjustedBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] -= amountToRemove;
+				allocState[state] -= amountToRemove;
+
 				if( adjustedBond['investAmt'] === 0 ) minAlloc = this.state.minAllocBond;
 				minIncrementToAllocate = ( bucketMoney - allocBucket[bucket] ) / ( minAlloc * (  adjustedBond.price * 1 / 100 ) );
 				minIncrementToAllocate = Math.floor( minIncrementToAllocate ) * ( minAlloc * adjustedBond.price * 1 / 100 );
-			
+
 				if( ( previousAllocatedBond.sector === 'Health Care' && sectorLimitCheck  > maxHealthCare )
 				|| ( sectorLimitCheck > maxSector ) || ( stateLimitCheck > maxState ) || ( nyStateLimitCheck > maxNYState || caStateLimitCheck > maxCAState )
 				|| ( aAndBelowLimitCheck > maxAandBelow ) || ( previousAllocatedBond['investAmt'] + minIncrementToAllocate ) > this.state.maxPercBond * this.state.investedAmount || ( ( previousAllocatedBond['investAmt'] + minIncrementToAllocate ) / ( previousAllocatedBond.price / 100 ) ) > this.state.maxAllocBond ){
-			
-			//	if( ( previousAllocatedBond['investAmt'] + minIncrementToAllocate ) > this.state.maxPercBond * this.state.investedAmount ||
-			//	( ( previousAllocatedBond['investAmt'] + minIncrementToAllocate ) / ( previousAllocatedBond.price / 100 ) ) > this.state.maxAllocBond ){
 
 					cashObject['cusip'] = 'Cash';
 					cashObject['investAmt'] = allocateToCash;
@@ -415,11 +403,9 @@ class App extends Component {
 				}
 			}else{
 				allocSector[sector] -= allocatedAmount;
-				allocBucket[bucket] -= allocatedAmount;	
+				allocBucket[bucket] -= allocatedAmount;
 				chosenBond['investAmt'] -= allocatedAmount;
 				if( rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] -= allocatedAmount;
-				//if( state === 'NY' ) allocState['NY'] -= allocatedAmount;
-				//if( state === 'CA' ) allocState['CA'] -= allocatedAmount;
 				allocState[state] -= allocatedAmount;
 
 				idx = allocatedData[bucket].length - 2;
@@ -431,7 +417,7 @@ class App extends Component {
 				nyStateLimitCheck = allocState['NY'];
 				caStateLimitCheck = allocState['CA'];
 				aAndBelowLimitCheck = allocRating['aAndBelow'];
-				
+
 				if( !previousAllocatedBond ) minAlloc = this.state.minAllocBond;
 				minIncrementToAllocate = ( bucketMoney - allocBucket[bucket] ) / ( minAlloc * ( previousAllocatedBond.price * 1 / 100 ) );
 
@@ -441,7 +427,7 @@ class App extends Component {
 				stateLimitCheck += minIncrementToAllocate;
 				if( previousAllocatedBond.state === 'NY' ) nyStateLimitCheck += minIncrementToAllocate;
 				if( previousAllocatedBond.state === 'CA' ) caStateLimitCheck += minIncrementToAllocate;
-				
+
 				if( previousAllocatedBond.rating.slice(0,2) !== 'AA' ) aAndBelowLimitCheck += minIncrementToAllocate;
 
 				if( ( previousAllocatedBond.sector === 'Health Care' && sectorLimitCheck  > maxHealthCare )
@@ -463,14 +449,12 @@ class App extends Component {
 					allocSector[sector] += minIncrementToAllocate;
 					previousAllocatedBond['investAmt'] += minIncrementToAllocate;
 					if( previousAllocatedBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += minIncrementToAllocate;
-				//	if( previousAllocatedBond.state === 'NY' ) allocState['NY'] += minIncrementToAllocate;
-				//	if( previousAllocatedBond.state === 'CA' ) allocState['CA'] += minIncrementToAllocate;
 					allocState[previousAllocatedBond.state] += minIncrementToAllocate;
 
 					allocateToCash = bucketMoney - allocBucket[bucket];
 					cashObject['cusip'] = 'Cash';
 					cashObject['investAmt'] = allocateToCash;
-					if( allocatedData[bucket].length - 1 !== 0 || previousAllocatedBond['investAmt'] == 0 ) 
+					if( allocatedData[bucket].length - 1 !== 0 || previousAllocatedBond['investAmt'] == 0 )
 					allocatedData[bucket].splice( allocatedData[bucket].length - 1, 1 );
 					allocatedData[bucket].push( cashObject );
 					allocSector['Cash'] += allocateToCash;
@@ -603,7 +587,7 @@ class App extends Component {
 
 //debugger;
 		allocSector[sector] -= allocatedAmount;
-		allocBucket[bucket] -= allocatedAmount;	
+		allocBucket[bucket] -= allocatedAmount;
 		chosenBond['investAmt'] -= allocatedAmount;
 		if( rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] -= allocatedAmount;
 		allocState[state] -= allocatedAmount;
@@ -747,14 +731,14 @@ class App extends Component {
 			let prevAllocBondChange = prevBondAlloc - previousAllocatedBond.investAmt;
 			let sectorLimitCheckPrev = allocSector[previousAllocatedBond.sector];
 			let sectorLimitCheckChosen = allocSector[chosenBond.sector];
-		
+
 			let stateLimitCheckPrev = allocState[previousAllocatedBond.state];
 			let stateLimitCheckChosen = allocState[chosenBond.state];
 
 			nyStateLimitCheck = allocState['NY'];
 			caStateLimitCheck = allocState['CA'];
 			aAndBelowLimitCheck = allocRating['aAndBelow'];
-			
+
 
 			if( previousAllocatedBond.sector !== chosenBond.sector ){
 				sectorLimitCheckPrev += prevAllocBondChange;
@@ -776,10 +760,10 @@ class App extends Component {
 			if( previousAllocatedBond.state === 'NY' ) nyStateLimitCheck += prevAllocBondChange;
 			if( previousAllocatedBond.state === 'CA' ) caStateLimitCheck += prevAllocBondChange;
 			if( previousAllocatedBond.rating.slice(0,2) !== 'AA' ) aAndBelowLimitCheck += prevAllocBondChange;
-		
+
 			if( chosenBond.state === 'NY' ) nyStateLimitCheck += chosenBondNewAlloc;
 			if( chosenBond.state === 'CA' ) caStateLimitCheck += chosenBondNewAlloc;
-			
+
 
 			if( chosenBond.rating.slice(0,2) !== 'AA' ) aAndBelowLimitCheck += chosenBondNewAlloc;
 
@@ -808,15 +792,13 @@ class App extends Component {
 
 				}else{
 
-				
+
 					allocBucket[checkBucket] += minIncrementToAllocate;
 					allocSector[sector] += minIncrementToAllocate;
 					allocState[state] += minIncrementToAllocate;
 					previousAllocatedBond['investAmt'] += minIncrementToAllocate;
 
 					if( previousAllocatedBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += minIncrementToAllocate;
-					//if( previousAllocatedBond.state === 'NY' ) allocState['NY'] += minIncrementToAllocate;
-					//if( previousAllocatedBond.state === 'CA' ) allocState['CA'] += minIncrementToAllocate;
 					if( ranking === 'aRated' || ranking === 'caMunis' || ranking === 'nyMunis' || ranking === 'HealthCare' ){
 						bucketState.bucketStateKeys.forEach( bucket => {
 							if( bucketState[bucket].currentRankIndex === rankIndex ){
@@ -836,21 +818,17 @@ class App extends Component {
 
 				}
 			}else{
-				allocBucket[bucket] += chosenBondNewAlloc;	
+				allocBucket[bucket] += chosenBondNewAlloc;
 				allocBucket[checkBucket] += prevBondAlloc - previousAllocatedBond.investAmt;
 
 				previousAllocatedBond['investAmt'] += prevBondAlloc - previousAllocatedBond.investAmt;
 
 				if( previousAllocatedBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += prevAllocBondChange;
-				//if( previousAllocatedBond.state === 'NY' ) allocState['NY'] += prevAllocBondChange;
-				//if( previousAllocatedBond.state === 'CA' ) allocState['CA'] += prevAllocBondChange;
 				allocState[previousAllocatedBond.state] += prevAllocBondChange;
 
 				allocSector[previousAllocatedBond.sector] += prevAllocBondChange;
 
 				if( chosenBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += chosenBondNewAlloc;
-				//if( chosenBond.state === 'NY' ) allocState['NY'] += chosenBondNewAlloc;
-				//if( chosenBond.state === 'CA' ) allocState['CA'] += chosenBondNewAlloc;
 				allocState[chosenBond.state] += chosenBondNewAlloc;
 
 				allocSector[chosenBond.sector] += chosenBondNewAlloc;
@@ -881,17 +859,14 @@ class App extends Component {
 			}
 
 			for ( let p = par; p >= this.state.minAllocBond; p -= this.state.minIncrement ){
-			//	aAndBelowLimitCheck = allocRating['aAndBelow'];
 				let tryAlloc = p * chosenBond.price / 100;
-				
+
 				if( calledBy === 'aAndBelow' || calledBy === 'HealthCare' ){
 					if ( limitCheck + tryAlloc <= maxAlloc ){
-						
+
 						allocBucket[bucket] += tryAlloc;
 						allocSector[sector] += tryAlloc;
-						if( chosenBond.rating.slice(0,2) !== 'AA') allocRating['aAndBelow'] += tryAlloc;
-						//if( chosenBond.state === 'NY' ) allocState['NY'] += tryAlloc;
-						//if( chosenBond.state === 'CA' ) allocState['CA'] += tryAlloc;
+						if( chosenBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += tryAlloc;
 						allocState[state] += tryAlloc;
 						chosenBond.investAmt = tryAlloc;
 						allocatedData[bucket].push( chosenBond );
@@ -953,7 +928,7 @@ class App extends Component {
 		const maxPercBond = this.state.maxPercBond;
 		const investedAmount = this.state.investedAmount;
 	  const maxBondSize = maxPercBond * investedAmount;
-		let allocSize = maxAllocBond;
+		let allocSize = maxAllocBond - 25000;
 
 		if( allocSize * price / 100 > maxBondSize ){
 			let bondIdx = argsObj.currentBucketState.currentBondIndex;
@@ -984,7 +959,7 @@ class App extends Component {
 					argsObj.chosenBond = bucketMunis[--bondIdx];
 					allocatedAmount = Number(( allocSize * testPrice / 100).toFixed(2) );
 					argsObj.allocatedAmount = allocatedAmount;
-				
+
 					argsObj.currentBucketState.allocSector[sector] ? argsObj.currentBucketState.allocSector[sector] += allocatedAmount
 					:argsObj.currentBucketState.allocSector[sector] = allocatedAmount;
 
@@ -1010,7 +985,7 @@ class App extends Component {
 
 			allocatedAmount = Number(( allocSize * price / 100).toFixed(2) );
 			argsObj.allocatedAmount = allocatedAmount;
-	
+
 			argsObj.currentBucketState.allocSector[sector] ? argsObj.currentBucketState.allocSector[sector] += allocatedAmount
 			:argsObj.currentBucketState.allocSector[sector] = allocatedAmount;
 
@@ -1168,9 +1143,7 @@ class App extends Component {
 
 			console.log('Before buckets change-numBuckets, bucket, bucketIdx, bucketControl --- ', numBuckets, bucket, bucketIndex, bucketControl)
 			if( bucketControl['nextBucket'] ){
-				// case when health care was allocated to previous bucket => do not change bucket
 				bucketControl['nextBucket'] = null;
-
 			}else{
 
 				if( ( bucketIndex === 0 &&  numBuckets > 1 ) || ( numBuckets === 1 ) ){
@@ -1192,21 +1165,28 @@ class App extends Component {
 		if( this.state.cashReducer === 'Yes' )
 			this.allocateCash( allocatedData, allocSector, allocRating, allocState );
 
-		/*
-		let fields = Object.keys( allocRating );
-		fields.forEach( field => {
-			allocSector[field] = allocRating[field];
+		let allocSectorByState = {};
+		Object.keys( allocatedData ).forEach( bucket => {
+			allocatedData[bucket].forEach( bond => {
+					let sector = bond.sector;
+					let amt = bond.investAmt;
+
+					if( sector ){
+						if( allocSectorByState[bond.state] ){
+							allocSectorByState[bond.state][sector] ? allocSectorByState[bond.state][sector] += amt :
+							allocSectorByState[bond.state][sector] = amt;
+						}else{
+							allocSectorByState[bond.state] = { [sector]: amt }
+						}
+					}
+
+			})
 		})
 
-		fields = Object.keys( allocState );
-		fields.forEach( field => {
-			allocSector[field] = allocState[field]
-		})
-		*/
 		let summary = { allocSector, allocState, allocRating };
-		console.log('FINAL.....summary, allocatedData----', summary, allocatedData);
-	
-		const bucketsSummary = this.createSummary( summary );
+		console.log('FINAL.....summary, allocatedData----', summary, allocatedData, allocSectorByState);
+
+		const bucketsSummary = this.createSummary( summary, allocSectorByState );
 		const bucketsByRows = this.createRows( allocatedData );
 		const columns = this.createColumns();
 		console.log('SET FOR SHOW.....summary,rows,columns', bucketsSummary, bucketsByRows, columns);
@@ -1229,6 +1209,8 @@ class App extends Component {
 		const maxCAState = this.state.maxCAState * investedAmount;
 		const maxState = this.state.maxState * investedAmount;
 		const maxAandBelow = this.state.maxRating * investedAmount;
+		const minPar = this.state.minAllocBond;
+		const maxPar = this.state.maxAllocBond;
 		const minIncrement = this.state.minIncrement;
 		const ranking = this.state.ranking;
 		let testBond = {};
@@ -1242,164 +1224,96 @@ class App extends Component {
 		let state = null;
 		let minIncrementToAllocate = 0;
 		let allocationLimit = 0;
-		//let currentAllocation = 0;
 		let leftRoom = 0;
 		let rankIndex = 0;
 		let bondIndex = 0;
 		let trackOverLimit = {};
 		let limitType = '';
-
+		let bondNum = 0;
+		let checkIncrements = 0;
+		let maxIncrement = false;
 
 		debugger;
 
 		buckets.forEach( bucketNumber => {
+
 			let bucket = allocatedData[bucketNumber];
 			bucketLength = bucket.length - 1;
 			allocatedCash = bucket[bucketLength].investAmt;
-			for( let i = 0; i < bucketLength; i++ ){
-
-				price = bucket[i].price;
-				sector = bucket[i].sector;
-				state = bucket[i].state;
-				allocationLimit = maxSector - allocSector[sector];
-				limitType = 'sector';
-				//currentAllocation = allocSector[sector];
-				
-				leftRoom = maxState - allocState[state];
-				if( allocationLimit > leftRoom ){
-					allocationLimit = leftRoom;
-					limitType = state;
-				}
-
-				if( bucket[i].rank === 'HealthCare' ){
-	 				leftRoom = maxHealthCare - allocSector[sector];
- 					if( allocationLimit > leftRoom ){
-						allocationLimit = leftRoom;
-						limitType = 'HealthCare';
-						//currentAllocation = allocSector[sector]
-					}	
-				}
-				if( bucket[i].rank === 'nyRated' ){
-			   		leftRoom = maxNYState - allocState['NY'];
-					if( allocationLimit > leftRoom ){
-						allocationLimit = leftRoom;
-						limitType = state;
-						//currentAllocation = allocState['NY']
-					}
-
-				}
-				if( bucket[i].rank === 'caRated' ){
-					leftRoom = maxCAState - allocState['CA'];
-					if( allocationLimit > leftRoom ){
-						allocationLimit = leftRoom;
-						limitType = state;
-					//	currentAllocation = allocState['CA']
-					}
-				}
-				if( bucket[i].rank === 'aRated' || bucket[i].rating.slice(0,2) !== 'AA' ){
-					leftRoom = maxAandBelow - allocRating['aAndBelow'];
-					if( allocationLimit > leftRoom ){
-						allocationLimit = leftRoom;
-						limitType = 'aAndBelow';
-					//	currentAllocation = allocRating['aAndBelow']
-					}
-
-				}
-			
-				minIncrementToAllocate = ( allocatedCash ) / ( minIncrement * ( price * 1 / 100 ) );
-
-				const bondNum = Math.floor( minIncrementToAllocate );
-				let checkIncrements = 1;
-				let maxIncrement = true;
-
-				if( bondNum > 0 ){
-			
-					do{
-
-						minIncrementToAllocate = Math.floor( checkIncrements ) * ( minIncrement * ( price * 1 / 100 ) );			
-						if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( bucket[i].investAmt + minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( ( bucket[i].investAmt + minIncrementToAllocate ) / ( bucket[i].price / 100 ) ) <= this.state.maxAllocBond ){
-						checkIncrements++;
-							
-						}else{
-							maxIncrement = true;
-						}
-					} while( checkIncrements <= bondNum && !maxIncrement )
-				}
-				minIncrementToAllocate = checkIncrements;
-				minIncrementToAllocate = Math.floor( minIncrementToAllocate ) * ( minIncrement * ( price * 1 / 100 ) );
-		
-				if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( bucket[i].investAmt + minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( ( bucket[i].investAmt + minIncrementToAllocate ) / ( bucket[i].price / 100 ) ) <= this.state.maxAllocBond && allocatedCash >= minIncrementToAllocate || ( checkIncrements === 1 && !trackOverLimit[limitType] && allocatedCash >= minIncrementToAllocate ) ){
-					if( !trackOverLimit[limitType] ) trackOverLimit[limitType] = true;
-		
-					bucket[bucketLength].investAmt = allocatedCash - minIncrementToAllocate;
-					bucket[i].investAmt += minIncrementToAllocate;
-//					if( bucket[i].state === 'NY' ) allocState['NY'] += minIncrementToAllocate;
-//					if( bucket[i].state === 'CA' ) allocState['CA'] += minIncrementToAllocate;
-					allocState[bucket[i].state] += minIncrementToAllocate;
-					if( bucket[i].rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += minIncrementToAllocate;
-					allocSector[sector] += minIncrementToAllocate;
-					allocSector.Cash -= allocatedCash;
-					allocSector.Cash += bucket[bucketLength].investAmt;
-					allocatedCash = bucket[bucketLength].investAmt;
-
-				}
-			}
 
 			if( allocatedCash > 0){
-
 				do{
 					for( let i = 0; i <  munis[bucketNumber][ranking[rankIndex]].length; i++ ){
 						testBond = Object.assign( {}, munis[bucketNumber][ranking[rankIndex]][bondIndex] );
 						price = testBond.price;
 						sector = testBond.sector;
 						state = testBond.state;
+						if( !allocSector[sector] ) allocSector[sector] = 0;
+						if( !allocState[state] ) allocState[state] = 0;
+						if( !allocRating['aAndBelow'] ) allocRating['aAndBelow'] = 0;
+
 						allocationLimit = maxSector - allocSector[sector];
-					//	currentAllocation = allocSector[sector];
 						leftRoom = maxState - allocState[state];
 						if( allocationLimit > leftRoom ){
 							allocationLimit = leftRoom;
 						}
-
 						if( testBond.rank === 'HealthCare' ){
-							 leftRoom = maxHealthCare - allocSector[sector];
-							 if( allocationLimit > leftRoom ){
+								leftRoom = maxHealthCare - allocSector[sector];
+								if( allocationLimit > leftRoom ){
 								allocationLimit = leftRoom;
-					//			currentAllocation = allocSector[sector]
 							}
 						}
 						if( testBond.rank === 'nyRated' ){
 							leftRoom = maxNYState - allocState['NY'];
 							if( allocationLimit > leftRoom ){
 								allocationLimit = leftRoom;
-					//			currentAllocation = allocState['NY']
 							}
-
 						}
 						if( testBond.rank === 'caRated' ){
 							leftRoom = maxCAState - allocState['CA'];
 							if( allocationLimit > leftRoom ){
 								allocationLimit = leftRoom;
-					//			currentAllocation = allocState['CA']
 							}
 						}
 						if( testBond.rank === 'aRated' || testBond.rating.slice(0,2) !== 'AA' ){
 							leftRoom = maxAandBelow - allocRating['aAndBelow'];
 							if( allocationLimit > leftRoom ){
 								allocationLimit = leftRoom;
-					//			currentAllocation = allocRating['aAndBelow']
 							}
+						}
+						if( allocationLimit < 0 ) allocationLimit = 0;
+						if( allocationLimit > allocatedCash ) allocationLimit = allocatedCash;
 
+						minIncrementToAllocate = ( allocatedCash ) / ( minPar * ( price * 1 / 100 ) );
+						bondNum = Math.floor( minIncrementToAllocate );
+
+						checkIncrements = 0;
+						maxIncrement = false;
+
+						if( bondNum > 0 ){
+
+							do{
+								minIncrementToAllocate = ( minPar  + ( checkIncrements ) * minIncrement )  * ( price * 1 / 100 );
+
+								if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( minIncrementToAllocate / ( testBond.price / 100 ) ) <= maxPar ){
+									checkIncrements++;
+								}else{
+									maxIncrement = true;
+								}
+							} while( !maxIncrement )
 						}
 
-						minIncrementToAllocate = ( allocatedCash ) / ( this.state.minAllocBond * ( price * 1 / 100 ) );
-						minIncrementToAllocate = Math.floor( minIncrementToAllocate ) * ( this.state.minAllocBond * ( price * 1 / 100 ) );
+						--checkIncrements;
+						minIncrementToAllocate = ( minPar  + ( checkIncrements ) * minIncrement )  * ( price * 1 / 100 );
 
-						if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( minIncrementToAllocate / ( testBond.price / 100 ) ) <= this.state.maxAllocBond ){
+
+						// minIncrementToAllocate = Math.floor( minIncrementToAllocate ) * ( this.state.minAllocBond * ( price * 1 / 100 ) );
+
+						if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( minIncrementToAllocate / ( testBond.price / 100 ) ) <= maxPar ){
 							bucket[bucketLength].investAmt = allocatedCash - minIncrementToAllocate;
 							testBond.investAmt = 0 + minIncrementToAllocate;
 
-//							if( testBond.state === 'NY' ) allocState['NY'] += minIncrementToAllocate;
-//							if( testBond.state === 'CA' ) allocState['CA'] += minIncrementToAllocate;
+
 							allocState[state] ? allocState[state] += minIncrementToAllocate : allocState[state] = minIncrementToAllocate;
 							if( testBond.rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += minIncrementToAllocate;
 							allocSector[sector] += minIncrementToAllocate;
@@ -1418,10 +1332,95 @@ class App extends Component {
 				rankIndex = 0;
 			}
 
+			for( let i = 0; i < bucketLength; i++ ){
+
+				price = bucket[i].price;
+				sector = bucket[i].sector;
+				state = bucket[i].state;
+				allocationLimit = maxSector - allocSector[sector];
+				limitType = 'sector';
+
+				leftRoom = maxState - allocState[state];
+				if( allocationLimit > leftRoom ){
+					allocationLimit = leftRoom;
+					limitType = state;
+				}
+
+				if( bucket[i].rank === 'HealthCare' ){
+	 				leftRoom = maxHealthCare - allocSector[sector];
+ 					if( allocationLimit > leftRoom ){
+						allocationLimit = leftRoom;
+						limitType = 'HealthCare';
+					}
+				}
+
+				if( bucket[i].rank === 'nyRated' ){
+			   		leftRoom = maxNYState - allocState['NY'];
+					if( allocationLimit > leftRoom ){
+						allocationLimit = leftRoom;
+						limitType = state;
+					}
+				}
+
+				if( bucket[i].rank === 'caRated' ){
+					leftRoom = maxCAState - allocState['CA'];
+					if( allocationLimit > leftRoom ){
+						allocationLimit = leftRoom;
+						limitType = state;
+					}
+				}
+
+				if( bucket[i].rank === 'aRated' || bucket[i].rating.slice(0,2) !== 'AA' ){
+					leftRoom = maxAandBelow - allocRating['aAndBelow'];
+					if( allocationLimit > leftRoom ){
+						allocationLimit = leftRoom;
+						limitType = 'aAndBelow';
+					}
+				}
+
+				if( allocationLimit < 0 ) allocationLimit = 0;
+				minIncrementToAllocate = ( allocatedCash ) / ( minIncrement * ( price * 1 / 100 ) );
+
+				bondNum = Math.floor( minIncrementToAllocate );
+				checkIncrements = 1;
+				maxIncrement = false;
+
+				if( bondNum > 0 ){
+					do{
+
+						minIncrementToAllocate = Math.floor( checkIncrements ) * ( minIncrement * ( price * 1 / 100 ) );
+						if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( bucket[i].investAmt + minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( ( bucket[i].investAmt + minIncrementToAllocate ) / ( bucket[i].price / 100 ) ) <= maxPar ){
+						checkIncrements++;
+
+						}else{
+							maxIncrement = true;
+						}
+					} while( checkIncrements <= bondNum && !maxIncrement )
+				}
+
+				minIncrementToAllocate = checkIncrements;
+				minIncrementToAllocate = Math.floor( minIncrementToAllocate ) * ( minIncrement * ( price * 1 / 100 ) );
+
+				if( minIncrementToAllocate > 0 && minIncrementToAllocate <= allocationLimit && ( bucket[i].investAmt + minIncrementToAllocate <= this.state.maxPercBond * this.state.investedAmount ) && ( ( bucket[i].investAmt + minIncrementToAllocate ) / ( bucket[i].price / 100 ) ) <= maxPar && allocatedCash >= minIncrementToAllocate || ( checkIncrements === 1 && !trackOverLimit[limitType] && allocatedCash >= minIncrementToAllocate ) ){
+					if( !trackOverLimit[limitType] ) trackOverLimit[limitType] = true;
+
+					bucket[bucketLength].investAmt = allocatedCash - minIncrementToAllocate;
+					bucket[i].investAmt += minIncrementToAllocate;
+
+					allocState[bucket[i].state] += minIncrementToAllocate;
+					if( bucket[i].rating.slice(0,2) !== 'AA' ) allocRating['aAndBelow'] += minIncrementToAllocate;
+					allocSector[sector] += minIncrementToAllocate;
+					allocSector.Cash -= allocatedCash;
+					allocSector.Cash += bucket[bucketLength].investAmt;
+					allocatedCash = bucket[bucketLength].investAmt;
+
+				}
+			}
+
 		})
 	}
 
-	createSummary( summary ){
+	createSummary( summary, allocSectorByState ){
 		let groups = Object.keys( summary );
 		let bucketsSummary = [];
 		let rowObj = {};
@@ -1431,8 +1430,8 @@ class App extends Component {
 		groups.forEach( alloc => {
 			let fields = Object.keys( summary[alloc] );
 			let group = alloc;
-			fields.forEach( field => {	
-			
+			fields.forEach( field => {
+
 				rowObj[columnFields[0]] = field;
 				rowObj[columnFields[1]] = '$' + ( summary[alloc][field] ).toLocaleString();
 				rowObj[columnFields[2]] = Number( ( ( summary[alloc][field] * 1 / this.state.investedAmount *  1 ) * 100 ).toFixed(2) ) + '%';
@@ -1455,9 +1454,9 @@ class App extends Component {
 					bucketsSummary.push( rowObj );
 					rowObj = {};
 				}
-			})	
+			})
 		})
-	
+
 		let sectorObj = 0;
 		let ratingObj = 0;
 		let stateObj = 0;
@@ -1475,12 +1474,12 @@ class App extends Component {
 		let stateStart = sectorObj + ratingObj - 1;
 		let stateStartRest = stateStart + 2;
 		let startRating = sectorObj - 1;
-		
+
 		arrangedPortfolioSummary = bucketsSummary.map( ( obj, index ) => {
 			let indexedObj = {};
-			let startIndex = 0;
+			let startIndex = 1;
 			indexedObj = Object.assign( obj, { index: index } );
-	
+
 			if( obj.group === 'allocSector' && obj.portfolioSummary === 'Health Care' ){
 				indexedObj = { id: startIndex, obj };
 			}else if( obj.group === 'allocSector' && obj.portfolioSummary !== 'Cash' ){
@@ -1495,15 +1494,33 @@ class App extends Component {
 				obj.portfolioSummary = 'A Rated and Below';
 				indexedObj = { id: startRating, obj }
 			}else if( obj.portfolioSummary === 'Cash' ){
-				indexedObj = { id: arrLen, obj }
+				indexedObj = { id: 0, obj }
 			}
-			
+
 			return indexedObj;
 		})
 
 		console.log('..................arrangedPortfolioSummary', arrangedPortfolioSummary);
 		arrangedPortfolioSummary.sort( function(a, b){ return a.id - b.id } );
-		return arrangedPortfolioSummary.map( obj => bucketsSummary[obj.obj.index] );
+		let result = arrangedPortfolioSummary.map( obj => bucketsSummary[obj.obj.index] );
+		let obj = {};
+		let arr = [];
+
+		Object.keys( allocSectorByState ).forEach( state => {
+			obj['portfolioSummary'] = state;
+			arr.push(obj);
+			obj = {};
+			Object.keys( allocSectorByState[state] ).forEach( sector => {
+				obj['portfolioSummary'] = sector;
+				obj['dollarAllocated'] = allocSectorByState[state][sector].toLocaleString();
+				arr.push(obj);
+				obj = {};
+			})
+
+		})
+		//let result = arrangedPortfolioSummary.concat(arr);
+		return result.concat(arr);
+
 	}
 
 	createColumns(){
