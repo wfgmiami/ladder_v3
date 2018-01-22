@@ -79,6 +79,7 @@ class App extends Component {
 	}
 
   	handleMinAllocChange( minAlloc ){
+		minAlloc = minAlloc * 1;
 		this.setState( { minAllocBond:  minAlloc } );
 	}
 
